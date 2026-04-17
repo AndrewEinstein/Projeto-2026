@@ -151,12 +151,21 @@ export default function Produtos(){
           </thead>
 
           <tbody>
-            {loading ? (
-                <tr><td colSpan={4}><div style={{display:'flex',alignItems:'center',gap:8}}><Spinner size={18}/> Carregando produtos...</div></td></tr>
-            ) : produtos.length === 0 ? (
+            {loading && (
+              <tr>
+                <td colSpan={4}>
+                  <div style={{display:'flex',alignItems:'center',gap:8}}>
+                    <Spinner size={18}/> Carregando produtos...
+                  </div>
+                </td>
+              </tr>
+            )}
+
+            {!loading && produtos.length === 0 && (
               <tr><td colSpan={4}>Nenhum produto</td></tr>
-            ) : (
-              produtos.map(p=> (
+            )}
+
+            {!loading && produtos.length > 0 && produtos.map(p => (
               <tr key={p.id}>
                 <td>{p.name}</td>
                 <td>R$ {p.price}</td>
