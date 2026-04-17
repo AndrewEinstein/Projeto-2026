@@ -2,6 +2,7 @@ import React from 'react'
 import { Outlet } from 'react-router-dom'
 import Sidebar from '../components/Sidebar'
 import Spinner from '../components/Spinner'
+import OfflineBanner from '../components/OfflineBanner'
 
 export default function AdminLayout() {
   return (
@@ -22,8 +23,7 @@ export default function AdminLayout() {
             <div className="avatar" />
           </div>
         </div>
-        {/* Global offline/banner placeholder - when needed we can toggle this */}
-        <div id="global-banner" style={{marginBottom:12}} />
+        <OfflineBanner />
         <div className="container">
           <Outlet />
         </div>
