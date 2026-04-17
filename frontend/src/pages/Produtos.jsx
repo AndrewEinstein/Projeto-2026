@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import Spinner from '../components/Spinner'
 import api from '../services/api'
 import Modal from '../components/Modal'
 import { useCart } from '../context/CartContext'
@@ -151,7 +152,7 @@ export default function Produtos(){
 
           <tbody>
             {loading ? (
-              <tr><td colSpan={4}>Carregando produtos...</td></tr>
+                <tr><td colSpan={4}><div style={{display:'flex',alignItems:'center',gap:8}}><Spinner size={18}/> Carregando produtos...</div></td></tr>
             ) : produtos.length === 0 ? (
               <tr><td colSpan={4}>Nenhum produto</td></tr>
             ) : (

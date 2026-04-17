@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import Spinner from '../components/Spinner'
 
 const API = 'http://localhost:4000/customers'
 
@@ -114,7 +115,11 @@ export default function Clientes() {
         )}
 
         {loading ? (
-          <div style={{ color: '#94a3b8' }}>Carregando clientes...</div>
+          <div style={{ color: '#94a3b8' }}>
+            <div style={{display:'flex',alignItems:'center',gap:8}}>
+              <Spinner size={20} /> Carregando clientes...
+            </div>
+          </div>
         ) : (
           clientes.length === 0 ? (
             <div style={{ color: '#94a3b8' }}>Nenhum cliente cadastrado</div>
