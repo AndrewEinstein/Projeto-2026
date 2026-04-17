@@ -7,6 +7,8 @@ import {
   Users,
   Receipt,
   Ticket,
+  FileText,
+  Server,
   ShoppingCart,
   Menu
 } from 'lucide-react'
@@ -17,6 +19,7 @@ const NAV_ITEMS = [
   { to: '/clientes', label: 'Clientes', icon: Users },
   { to: '/pedidos', label: 'Pedidos', icon: Receipt },
   { to: '/cupons', label: 'Cupons', icon: Ticket },
+  { to: '/logs', label: 'Logs', icon: FileText },
   { to: '/carrinho', label: 'Carrinho', icon: ShoppingCart },
 ]
 
@@ -83,16 +86,30 @@ export default function Sidebar() {
         alignItems: 'center',
         marginBottom: 20
       }}>
-        {!collapsed && (
-          <h2 style={{
-            fontWeight: 800,
-            background: 'linear-gradient(90deg, #22d3ee, #3b82f6)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent'
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+          <div style={{
+            width: 44,
+            height: 44,
+            borderRadius: 8,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            background: 'linear-gradient(135deg, #7c3aed, #06b6d4)'
           }}>
-            Meu Sistema
-          </h2>
-        )}
+            <Server size={22} color="#fff" />
+          </div>
+
+          {!collapsed && (
+            <h2 style={{
+              fontWeight: 800,
+              background: 'linear-gradient(90deg, #22d3ee, #3b82f6)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent'
+            }}>
+              Protheus
+            </h2>
+          )}
+        </div>
 
         <Menu
           size={22}

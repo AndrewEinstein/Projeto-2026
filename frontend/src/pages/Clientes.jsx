@@ -11,8 +11,11 @@ export default function Clientes() {
     try {
       const res = await fetch(API)
       const data = await res.json()
-      setClientes(data)
-    } catch {
+      // Normaliza os campos vindos do backend (name -> nome, telefone pode não existir)
+      const normalized = data.map(c => ({ id: c.id, nome: c.name || c.nome, email: c.email, telefone: c.telefone || '' }))
+      setClientes(normalized)
+    } catch (err) {
+      console.error('Erro ao carregar clientes', err)
       alert('Erro ao carregar clientes')
     }
   }
@@ -32,17 +35,19 @@ export default function Clientes() {
     }
 
     try {
+      // O backend espera os campos em inglês: { name, email }
+      const payload = { name: form.nome, email: form.email }
       if (editId) {
         await fetch(`${API}/${editId}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(form)
+          body: JSON.stringify(payload)
         })
       } else {
         await fetch(API, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(form)
+          body: JSON.stringify(payload)
         })
       }
 
@@ -55,7 +60,7 @@ export default function Clientes() {
   }
 
   const editar = (cliente) => {
-    setForm(cliente)
+    setForm({ nome: cliente.nome || cliente.name || '', email: cliente.email || '', telefone: cliente.telefone || '' })
     setEditId(cliente.id)
   }
 

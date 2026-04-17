@@ -7,6 +7,7 @@ import Pedidos from './pages/Pedidos'
 import Cupons from './pages/Cupons'
 import Carrinho from './pages/Carrinho'
 import Checkout from './pages/Checkout'
+import Logs from './pages/Logs'
 import AdminLayout from './layout/AdminLayout'
 
 export default function App() {
@@ -18,6 +19,7 @@ export default function App() {
         <Route path="clientes" element={<Clientes />} />
         <Route path="pedidos" element={<Pedidos />} />
         <Route path="cupons" element={<Cupons />} />
+        <Route path="logs" element={<Logs />} />
         <Route path="carrinho" element={<Carrinho />} />
         <Route path="checkout" element={<Checkout />} />
       </Route>
