@@ -6,17 +6,24 @@ export default function Clientes() {
   const [clientes, setClientes] = useState([])
   const [form, setForm] = useState({ nome: '', email: '', telefone: '' })
   const [editId, setEditId] = useState(null)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(null)
 
   const carregar = async () => {
+    setLoading(true)
+    setError(null)
     try {
       const res = await fetch(API)
+      if (!res.ok) throw new Error('Erro na resposta da API')
       const data = await res.json()
       // Normaliza os campos vindos do backend (name -> nome, telefone pode não existir)
       const normalized = data.map(c => ({ id: c.id, nome: c.name || c.nome, email: c.email, telefone: c.telefone || '' }))
       setClientes(normalized)
     } catch (err) {
       console.error('Erro ao carregar clientes', err)
-      alert('Erro ao carregar clientes')
+      setError('Erro ao carregar clientes — verifique se o backend está rodando')
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -100,31 +107,41 @@ export default function Clientes() {
       </div>
 
       <div>
-        {clientes.length === 0 ? (
-          <div style={{ color: '#94a3b8' }}>Nenhum cliente cadastrado</div>
+        {error && (
+          <div style={{ background: '#ffe6e6', color: '#b91c1c', padding: 12, borderRadius: 8, marginBottom: 12 }}>
+            {error}
+          </div>
+        )}
+
+        {loading ? (
+          <div style={{ color: '#94a3b8' }}>Carregando clientes...</div>
         ) : (
-          clientes.map(c => (
-            <div key={c.id} style={cardItem}
-              onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.02)'}
-              onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
-            >
-              <div>
-                <strong style={{ fontSize: 16 }}>{c.nome}</strong>
-                <div style={{ color: '#94a3b8' }}>{c.email}</div>
-                <div style={{ color: '#94a3b8' }}>{c.telefone}</div>
-              </div>
+          clientes.length === 0 ? (
+            <div style={{ color: '#94a3b8' }}>Nenhum cliente cadastrado</div>
+          ) : (
+            clientes.map(c => (
+              <div key={c.id} style={cardItem}
+                onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.02)'}
+                onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
+              >
+                <div>
+                  <strong style={{ fontSize: 16 }}>{c.nome}</strong>
+                  <div style={{ color: '#94a3b8' }}>{c.email}</div>
+                  <div style={{ color: '#94a3b8' }}>{c.telefone}</div>
+                </div>
 
-              <div style={{ display: 'flex', gap: 8 }}>
-                <button onClick={() => editar(c)} style={btnEdit}>
-                  Editar
-                </button>
+                <div style={{ display: 'flex', gap: 8 }}>
+                  <button onClick={() => editar(c)} style={btnEdit}>
+                    Editar
+                  </button>
 
-                <button onClick={() => excluir(c.id)} style={btnDelete}>
-                  Excluir
-                </button>
+                  <button onClick={() => excluir(c.id)} style={btnDelete}>
+                    Excluir
+                  </button>
+                </div>
               </div>
-            </div>
-          ))
+            ))
+          )
         )}
       </div>
     </div>

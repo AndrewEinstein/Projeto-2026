@@ -8,16 +8,25 @@ export default function Produtos(){
   const [showModal, setShowModal] = useState(false)
   const [form, setForm] = useState({ name:'', price:'', stock:'' })
   const [editId, setEditId] = useState(null)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(null)
 
   const { addToCart } = useCart()
 
   useEffect(()=>{fetchProducts()},[])
 
   async function fetchProducts(){
+    setLoading(true)
+    setError(null)
     try{
       const data = await api.get('/products')
       setProdutos(data)
-    }catch(err){console.error(err)}
+    }catch(err){
+      console.error(err)
+      setError('Erro ao carregar produtos — verifique o backend')
+    }finally{
+      setLoading(false)
+    }
   }
 
   function handleCreate(){
@@ -125,6 +134,11 @@ export default function Produtos(){
       </div>
 
       <div className="card">
+        {error && (
+          <div style={{ background: '#ffe6e6', color: '#b91c1c', padding: 12, borderRadius: 8, marginBottom: 12 }}>
+            {error}
+          </div>
+        )}
         <table className="table">
           <thead>
             <tr>
@@ -136,11 +150,12 @@ export default function Produtos(){
           </thead>
 
           <tbody>
-            {produtos.length === 0 && (
+            {loading ? (
+              <tr><td colSpan={4}>Carregando produtos...</td></tr>
+            ) : produtos.length === 0 ? (
               <tr><td colSpan={4}>Nenhum produto</td></tr>
-            )}
-
-            {produtos.map(p=> (
+            ) : (
+              produtos.map(p=> (
               <tr key={p.id}>
                 <td>{p.name}</td>
                 <td>R$ {p.price}</td>
